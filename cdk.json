@@ -1,0 +1,6 @@
+{
+  "app": "npx ts-node deploy/app.ts",
+  "context": {
+    "@aws-cdk/aws-lambda:recognizeVersionProps": true
+  }
+}
