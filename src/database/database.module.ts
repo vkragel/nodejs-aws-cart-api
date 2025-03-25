@@ -7,6 +7,8 @@ import {
   DB_PORT,
   DB_USERNAME,
 } from '../../constants/credentials';
+import { Cart } from './entities/cart.entity';
+import { CartItem } from './entities/cart-item.entity';
 
 @Module({
   imports: [
@@ -22,7 +24,9 @@ import {
       ssl: {
         rejectUnauthorized: false,
       },
+      entities: [Cart, CartItem],
     }),
+    TypeOrmModule.forFeature([Cart, CartItem]),
   ],
   exports: [TypeOrmModule],
 })
