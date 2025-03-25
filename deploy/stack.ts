@@ -2,6 +2,13 @@ import { CfnOutput, Duration, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { FunctionUrlAuthType, Runtime } from 'aws-cdk-lib/aws-lambda';
+import {
+  DB_DATABASE,
+  DB_HOST,
+  DB_PASSWORD,
+  DB_PORT,
+  DB_USERNAME,
+} from '../constants/credentials';
 
 export class CartApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -19,6 +26,13 @@ export class CartApiStack extends Stack {
           'class-transformer',
           'class-validator',
         ],
+      },
+      environment: {
+        DB_DATABASE,
+        DB_HOST,
+        DB_PASSWORD,
+        DB_PORT,
+        DB_USERNAME,
       },
     });
 
