@@ -7,8 +7,8 @@ import {
   DB_PORT,
   DB_USERNAME,
 } from '../../constants/credentials';
-import { Cart } from './entities/cart.entity';
-import { CartItem } from './entities/cart-item.entity';
+import { CartEntity } from '../cart/models/cart.entity';
+import { CartItemEntity } from '../cart/models/cart-item.entity';
 
 @Module({
   imports: [
@@ -24,9 +24,9 @@ import { CartItem } from './entities/cart-item.entity';
       ssl: {
         rejectUnauthorized: false,
       },
-      entities: [Cart, CartItem],
+      entities: [CartEntity, CartItemEntity],
     }),
-    TypeOrmModule.forFeature([Cart, CartItem]),
+    TypeOrmModule.forFeature([CartEntity, CartItemEntity]),
   ],
   exports: [TypeOrmModule],
 })
