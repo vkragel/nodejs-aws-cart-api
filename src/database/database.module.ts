@@ -9,6 +9,7 @@ import {
 } from '../../constants/credentials';
 import { CartEntity } from '../cart/models/cart.entity';
 import { CartItemEntity } from '../cart/models/cart-item.entity';
+import { UserEntity } from 'src/users/models/user.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { CartItemEntity } from '../cart/models/cart-item.entity';
       ssl: {
         rejectUnauthorized: false,
       },
-      entities: [CartEntity, CartItemEntity],
+      entities: [CartEntity, CartItemEntity, UserEntity],
     }),
     TypeOrmModule.forFeature([CartEntity, CartItemEntity]),
   ],

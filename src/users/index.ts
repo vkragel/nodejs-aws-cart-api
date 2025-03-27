@@ -1,2 +1,2 @@
-export * from './models';
+export * from './models/user.entity';
 export * from './services';

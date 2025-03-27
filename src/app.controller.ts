@@ -14,7 +14,7 @@ import {
   // JwtAuthGuard,
   BasicAuthGuard,
 } from './auth';
-import { User } from './users';
+import { UserEntity } from './users';
 import { AppRequest } from './shared';
 
 @Controller()
@@ -32,8 +32,8 @@ export class AppController {
   @Post('api/auth/register')
   @HttpCode(HttpStatus.CREATED)
   // TODO ADD validation
-  register(@Body() body: User) {
-    return this.authService.register(body);
+  async register(@Body() body: UserEntity) {
+    return await this.authService.register(body);
   }
 
   @UseGuards(LocalAuthGuard)
