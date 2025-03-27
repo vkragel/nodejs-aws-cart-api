@@ -1,7 +1,11 @@
 import { CfnOutput, Duration, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { FunctionUrlAuthType, Runtime } from 'aws-cdk-lib/aws-lambda';
+import {
+  FunctionUrlAuthType,
+  HttpMethod,
+  Runtime,
+} from 'aws-cdk-lib/aws-lambda';
 import {
   DB_DATABASE,
   DB_HOST,
@@ -9,18 +13,20 @@ import {
   DB_PORT,
   DB_USERNAME,
 } from '../constants/credentials';
+import * as path from 'path';
 
 export class CartApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const server = new NodejsFunction(this, 'CartApiServerLambda', {
-      entry: './src/main.lambda.ts',
+      entry: path.join(__dirname, '../src/main.lambda.ts'),
+      handler: 'handler',
       timeout: Duration.seconds(30),
-      memorySize: 1024,
-      runtime: Runtime.NODEJS_18_X,
+      runtime: Runtime.NODEJS_20_X,
       bundling: {
         externalModules: [
+          'aws-cdk',
           '@nestjs/microservices',
           '@nestjs/websockets',
           'class-transformer',
@@ -38,11 +44,13 @@ export class CartApiStack extends Stack {
 
     const { url } = server.addFunctionUrl({
       authType: FunctionUrlAuthType.NONE,
-      cors: { allowedOrigins: ['*'] },
+      cors: {
+        allowedOrigins: ['*'],
+        allowedMethods: [HttpMethod.GET, HttpMethod.DELETE, HttpMethod.PUT],
+        allowedHeaders: ['*'],
+      },
     });
 
-    new CfnOutput(this, 'CartApiServerUrl', {
-      value: url,
-    });
+    new CfnOutput(this, 'CartServiceUrl', { value: url });
   }
 }
