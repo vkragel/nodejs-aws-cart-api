@@ -20,7 +20,7 @@ export class CartApiStack extends Stack {
     super(scope, id, props);
 
     const server = new NodejsFunction(this, 'CartApiServerLambda', {
-      entry: path.join(__dirname, '../src/main.lambda.ts'),
+      entry: path.join(__dirname, '../dist/src/main.lambda.js'),
       handler: 'handler',
       timeout: Duration.seconds(30),
       runtime: Runtime.NODEJS_20_X,
@@ -44,11 +44,6 @@ export class CartApiStack extends Stack {
 
     const { url } = server.addFunctionUrl({
       authType: FunctionUrlAuthType.NONE,
-      cors: {
-        allowedOrigins: ['*'],
-        allowedMethods: [HttpMethod.GET, HttpMethod.DELETE, HttpMethod.PUT],
-        allowedHeaders: ['*'],
-      },
     });
 
     new CfnOutput(this, 'CartServiceUrl', { value: url });
