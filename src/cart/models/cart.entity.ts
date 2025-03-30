@@ -7,6 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { CartItemEntity } from './cart-item.entity';
+import { OrderEntity } from 'src/order';
 
 export enum CartStatus {
   OPEN = 'OPEN',
@@ -32,4 +33,7 @@ export class CartEntity {
 
   @OneToMany(() => CartItemEntity, (cartItem) => cartItem.cart)
   items: CartItemEntity[];
+
+  @OneToMany(() => OrderEntity, (order) => order.cart)
+  orders?: OrderEntity[];
 }

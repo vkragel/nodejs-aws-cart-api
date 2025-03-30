@@ -10,6 +10,7 @@ import {
 import { CartEntity } from '../cart/models/cart.entity';
 import { CartItemEntity } from '../cart/models/cart-item.entity';
 import { UserEntity } from 'src/users/models/user.entity';
+import { OrderEntity } from 'src/order';
 
 @Module({
   imports: [
@@ -25,9 +26,9 @@ import { UserEntity } from 'src/users/models/user.entity';
       ssl: {
         rejectUnauthorized: false,
       },
-      entities: [CartEntity, CartItemEntity, UserEntity],
+      entities: [CartEntity, CartItemEntity, UserEntity, OrderEntity],
     }),
-    TypeOrmModule.forFeature([CartEntity, CartItemEntity]),
+    TypeOrmModule.forFeature([CartEntity, CartItemEntity, OrderEntity]),
   ],
   exports: [TypeOrmModule],
 })
