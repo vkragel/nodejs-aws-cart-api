@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { OrderStatus } from '../type';
 import { CartEntity } from 'src/cart';
 
@@ -13,10 +19,10 @@ export class OrderEntity {
   @Column({ type: 'uuid', nullable: false })
   cart_id: string;
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: false, default: {} })
   payment: { type: string; address?: any; creditCard?: any };
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: false, default: {} })
   delivery: { type: string; address: any };
 
   @Column({ type: 'text', nullable: true })
@@ -29,5 +35,6 @@ export class OrderEntity {
   total: number;
 
   @ManyToOne(() => CartEntity, (cart) => cart.orders, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'cart_id' })
   cart: CartEntity;
 }

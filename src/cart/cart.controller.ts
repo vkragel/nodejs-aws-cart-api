@@ -21,8 +21,8 @@ import { CreateOrderDto, PutCartPayload } from 'src/order/type';
 @Controller('api/profile/cart')
 export class CartController {
   constructor(
-    private cartService: CartService,
-    private orderService: OrderService,
+    private readonly cartService: CartService,
+    private readonly orderService: OrderService,
   ) {}
 
   @UseGuards(BasicAuthGuard)
@@ -68,17 +68,19 @@ export class CartController {
     }
 
     const { id: cartId, items } = cart;
+
     const total = calculateCartTotal(items);
     const order = await this.orderService.create({
-      userId,
-      cartId,
+      user_id: userId,
+      cart_id: cartId,
       items: items.map(({ product_id, count }) => ({
-        productId: product_id,
+        product_id,
         count,
       })),
       address: body.address,
       total,
     });
+
     await this.cartService.removeByUserId(userId);
 
     return { order };

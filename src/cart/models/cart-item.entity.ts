@@ -1,5 +1,6 @@
 import { Entity, Column, ManyToOne, PrimaryColumn, JoinColumn } from 'typeorm';
 import { CartEntity } from './cart.entity';
+import { ProductEntity } from './product.entity';
 
 @Entity('cart_items')
 export class CartItemEntity {
@@ -15,4 +16,8 @@ export class CartItemEntity {
   @ManyToOne(() => CartEntity, (cart) => cart.items, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'cart_id' })
   cart: CartEntity;
+
+  @ManyToOne(() => ProductEntity, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'product_id' })
+  product: ProductEntity;
 }

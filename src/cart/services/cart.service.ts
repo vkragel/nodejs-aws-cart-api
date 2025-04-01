@@ -19,6 +19,7 @@ export class CartService {
     const openedCart = await this.cartRepository
       .createQueryBuilder('carts')
       .leftJoinAndSelect('carts.items', 'cart_items')
+      .leftJoinAndSelect('cart_items.product', 'product')
       .where('carts.user_id = :userId', { userId })
       .andWhere('carts.status = :status', { status: CartStatus.OPEN })
       .getOne();
