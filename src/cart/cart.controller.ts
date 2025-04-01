@@ -81,8 +81,6 @@ export class CartController {
       total,
     });
 
-    await this.cartService.removeByUserId(userId);
-
     return { order };
   }
 

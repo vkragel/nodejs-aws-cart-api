@@ -15,8 +15,12 @@ export class OrderService {
   ) {}
 
   async getAll(): Promise<OrderEntity[]> {
-    return await this.orderRepository.find({
-      relations: ['cart'],
+    const orders = await this.orderRepository.find({
+      relations: ['cart', 'cart.items'],
+    });
+
+    return orders.map((order) => {
+      return { ...order, items: order.cart?.items };
     });
   }
 
@@ -27,17 +31,24 @@ export class OrderService {
   }
 
   async create(data: CreateOrderPayload): Promise<OrderEntity> {
-    const id = randomUUID() as string;
-
-    const order = await this.orderRepository.create({ ...data, id });
-
     return await this.dataSource.manager.transaction(async (tem) => {
-      await tem.save(OrderEntity, order);
+      const order = tem.create(OrderEntity, { ...data, id: randomUUID() });
+
+      await tem.save(order);
+
       await tem.update(
         CartEntity,
-        { user_id: order.user_id },
-        { status: CartStatus.OPEN },
+        { id: data.cart_id },
+        { status: CartStatus.ORDERED },
       );
+
+      const cart = await tem.findOne(CartEntity, {
+        where: { id: data.cart_id },
+        relations: ['items'],
+      });
+
+      order['items'] = cart?.items || [];
+
       return order;
     });
   }
