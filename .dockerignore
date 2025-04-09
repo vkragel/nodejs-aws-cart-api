@@ -1,0 +1,18 @@
+# Node.js - related
+node_modules
+
+# Build outputs
+dist
+cdk.out
+
+# Source files
+test
+deploy
+
+# IDE/editor stuff
+.vscode
+.DS_Store
+
+# Git
+.git
+.gitignore
